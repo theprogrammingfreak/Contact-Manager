@@ -32,6 +32,7 @@ public class User {
     private boolean emailVerified = false;
     private boolean phoneVerified = false;
 
+    @Enumerated
     //Self, Google, Facebook, Twitter, LinkedIn, GitHub
     private Providers provider = Providers.SELF;
     private String providerUserId;
