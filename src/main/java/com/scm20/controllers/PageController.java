@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.scm20.entities.User;
 import com.scm20.forms.UserForm;
+import com.scm20.helpers.Message;
+import com.scm20.helpers.MessageType;
 import com.scm20.services.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 ;
 
@@ -68,7 +72,7 @@ public class PageController {
     //processing register 
     
     @RequestMapping(value ="/do-register", method = RequestMethod.POST)
-    public String processRegister(@ModelAttribute UserForm userForm){
+    public String processRegister(@ModelAttribute UserForm userForm,HttpSession session){
         System.out.println("Processing registration");
         // fetch form data
         // UserForm (class to fetch all the data from)
@@ -87,9 +91,20 @@ public class PageController {
         .phoneNumber(userForm.getPhoneNumber())
         .build();
 
+        // User user = new User();
+        // user.setName(userForm.getName());
+        // user.setEmail(userForm.getEmail());
+        // user.setPassword(userForm.getPassword());
+        // user.setAbout(userForm.getAbout());
+        // user.setPhoneNumber(userForm.getPhoneNumber());
+        // user.setProfilePic("https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg");
+
         User savedUser = userService.saveUser(user);
         System.out.println("user saved");
         // message = "Registration Successful"
+        Message message = Message.builder().content("Registration Successful").type(MessageType.green).build();
+
+        session.setAttribute("message",message);
         // redirect to login page
 
         return "redirect:/register";
